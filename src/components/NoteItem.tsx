@@ -1,5 +1,6 @@
 "use client"
 import React from 'react';
+import { useUser } from '@clerk/clerk-react';
 
 type Note = {
   id: number;
@@ -13,6 +14,7 @@ type NoteItemProps = {
 };
 
 const NoteItem = ({ note, onDelete }: NoteItemProps) => {
+  const { isSignedIn } = useUser();
   const handleDelete = () => {
     onDelete(note.id);
   };
@@ -23,7 +25,9 @@ const NoteItem = ({ note, onDelete }: NoteItemProps) => {
         <h1 className="text-xl font-bold">{note.title}</h1>
         <p className="text-gray-300">{note.content}</p>
       </div>
-      <button className="bg-white hover:bg-gray-300 text-black py-1 px-3 rounded-lg" onClick={handleDelete}>Delete</button>
+      {isSignedIn && (
+        <button className="bg-white hover:bg-gray-300 text-black py-1 px-3 rounded-lg" onClick={handleDelete}>Delete</button>
+      )}
     </div>
   );
 };
